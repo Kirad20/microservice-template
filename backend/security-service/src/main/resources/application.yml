@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: security-service
+
+grpc:
+  server:
+    port: 9094
+  client:
+    user-service:
+      address: 'static://localhost:9090'
+      enable-keep-alive: true
+      negotiation-type: plaintext
+
+jwt:
+  secret: ${JWT_SECRET:your-secret-key-that-is-long-enough-to-be-secure}
+  expiration: 86400000 # 24 hours

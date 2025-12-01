@@ -1,0 +1,19 @@
+<div class="login-container">
+  <p-card header="Login" [style]="{width: '360px'}">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="username">Username</label>
+          <input pInputText id="username" formControlName="username" />
+        </div>
+        <div class="p-field">
+          <label for="password">Password</label>
+          <input pInputText type="password" id="password" formControlName="password" />
+        </div>
+      </div>
+      <div class="p-field">
+        <p-button label="Submit" type="submit" [disabled]="loginForm.invalid"></p-button>
+      </div>
+    </form>
+  </p-card>
+</div>

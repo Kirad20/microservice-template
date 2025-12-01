@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+grpc:
+  client:
+    user-service:
+      address: 'static://localhost:9090'
+      enable-keep-alive: true
+      negotiation-type: plaintext
+    security-service:
+      address: 'static://localhost:9094'
+      enable-keep-alive: true
+      negotiation-type: plaintext
+spring:
+  main:
+    web-application-type: reactive

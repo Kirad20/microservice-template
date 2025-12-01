@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:-user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=user_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
+  user-service:
+    build: backend/user-service
+    image: ghcr.io/owner/repo/user-service
+    ports:
+      - "9090:9090"
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/user_db
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-that-is-long-enough-to-be-secure}
+    depends_on:
+      - postgres
+
+  security-service:
+    build: backend/security-service
+    image: ghcr.io/owner/repo/security-service
+    ports:
+      - "8081:8081"
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-that-is-long-enough-to-be-secure}
+    depends_on:
+      - user-service
+
+  product-service:
+    build: backend/product-service
+    image: ghcr.io/owner/repo/product-service
+    ports:
+      - "9091:9091"
+    environment:
+      - DB_URL_PRODUCT=jdbc:postgresql://postgres:5432/product_db
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-that-is-long-enough-to-be-secure}
+    depends_on:
+      - postgres
+
+  client-service:
+    build: backend/client-service
+    image: ghcr.io/owner/repo/client-service
+    ports:
+      - "9092:9092"
+    environment:
+      - DB_URL_CLIENT=jdbc:postgresql://postgres:5432/client_db
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-that-is-long-enough-to-be-secure}
+    depends_on:
+      - postgres
+
+  appointment-service:
+    build: backend/appointment-service
+    image: ghcr.io/owner/repo/appointment-service
+    ports:
+      - "9093:9093"
+    environment:
+      - DB_URL_APPOINTMENT=jdbc:postgresql://postgres:5432/appointment_db
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-that-is-long-enough-to-be-secure}
+    depends_on:
+      - postgres
+      - client-service
+      - product-service
+
+  bff:
+    build: bff
+    image: ghcr.io/owner/repo/bff
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - security-service
+      - product-service
+      - client-service
+      - appointment-service
+
+  frontend:
+    build: frontend/angular-client
+    image: ghcr.io/owner/repo/frontend
+    ports:
+      - "4200:80"
+
+volumes:
+  postgres_data:
