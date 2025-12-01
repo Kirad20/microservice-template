@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.template.product;
+
+option java_multiple_files = true;
+option java_package = "com.template.product.grpc";
+option java_outer_classname = "ProductProto";
+
+service ProductService {
+    rpc GetProduct(GetProductRequest) returns (ProductResponse);
+    rpc CreateProduct(CreateProductRequest) returns (ProductResponse);
+}
+
+message GetProductRequest {
+    string product_id = 1;
+}
+
+message CreateProductRequest {
+    string name = 1;
+    string description = 2;
+    double price = 3;
+}
+
+message ProductResponse {
+    string product_id = 1;
+    string name = 2;
+    string description = 3;
+    double price = 4;
+}

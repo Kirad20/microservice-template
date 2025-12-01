@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package com.template.user;
+
+option java_multiple_files = true;
+option java_package = "com.template.user.grpc";
+option java_outer_classname = "UserProto";
+
+// UserService definition
+service UserService {
+  rpc GetUser(GetUserRequest) returns (UserResponse);
+  rpc GetUserByUsername(GetUserByUsernameRequest) returns (UserResponse);
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  // Add other RPC methods for user management (Update, Delete, etc.)
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message GetUserByUsernameRequest {
+    string username = 1;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message UserResponse {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  string password = 4;
+  repeated Role roles = 5;
+}
+
+message Role {
+    string role_id = 1;
+    string name = 2;
+    repeated Permission permissions = 3;
+}
+
+message Permission {
+    string permission_id = 1;
+    string name = 2;
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package com.template.client;
+
+option java_multiple_files = true;
+option java_package = "com.template.client.grpc";
+option java_outer_classname = "ClientProto";
+
+service ClientService {
+    rpc GetClient(GetClientRequest) returns (ClientResponse);
+    rpc CreateClient(CreateClientRequest) returns (ClientResponse);
+}
+
+message GetClientRequest {
+    string client_id = 1;
+}
+
+message CreateClientRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    string phone = 4;
+}
+
+message ClientResponse {
+    string client_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string phone = 5;
+}

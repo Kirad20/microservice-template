@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.template.security;
+
+option java_multiple_files = true;
+option java_package = "com.template.security.grpc";
+option java_outer_classname = "SecurityProto";
+
+service AuthService {
+  rpc Authenticate(AuthRequest) returns (AuthResponse);
+}
+
+message AuthRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthResponse {
+  string access_token = 1;
+}
