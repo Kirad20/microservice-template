@@ -1,0 +1,45 @@
+<div class="card">
+    <h2>System Configuration</h2>
+    <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid grid">
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <input pInputText id="appName" formControlName="appName" />
+                    <label for="appName">App Name</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <input pInputText id="logoUrl" formControlName="logoUrl" />
+                    <label for="logoUrl">Logo URL</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <input pInputText id="primaryColor" formControlName="primaryColor" />
+                    <label for="primaryColor">Primary Color (Hex)</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <input pInputText id="secondaryColor" formControlName="secondaryColor" />
+                    <label for="secondaryColor">Secondary Color (Hex)</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <input pInputText id="timezone" formControlName="timezone" />
+                    <label for="timezone">Timezone</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="flex justify-content-end mt-4">
+            <p-button label="Save Changes" type="submit" [loading]="loading"></p-button>
+        </div>
+    </form>
+</div>

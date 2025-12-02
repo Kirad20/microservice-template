@@ -1,19 +1,41 @@
-<div class="login-container">
-  <p-card header="Login" [style]="{width: '360px'}">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="p-fluid">
-        <div class="p-field">
-          <label for="username">Username</label>
-          <input pInputText id="username" formControlName="username" />
+<div class="login-wrapper">
+    <div class="login-content">
+        <div class="login-card-container">
+            <p-card [style]="{width: '100%', maxWidth: '450px'}" styleClass="shadow-4">
+                <ng-template pTemplate="header">
+                    <div class="login-header">
+                        <img [src]="(config$ | async)?.logoUrl || 'assets/logo-placeholder.png'" alt="Logo" class="login-logo">
+                        <h2>{{ (config$ | async)?.appName || 'Welcome' }}</h2>
+                        <p class="subtitle">Please sign in to continue</p>
+                    </div>
+                </ng-template>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+                    <div class="field">
+                        <span class="p-float-label">
+                            <input pInputText id="username" formControlName="username" class="w-full" />
+                            <label for="username">Username</label>
+                        </span>
+                        <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="p-error">Username is required</small>
+                    </div>
+
+                    <div class="field mt-4">
+                        <span class="p-float-label">
+                            <input pInputText type="password" id="password" formControlName="password" class="w-full" />
+                            <label for="password">Password</label>
+                        </span>
+                        <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="p-error">Password is required</small>
+                    </div>
+
+                    <div class="form-actions mt-4">
+                        <p-button label="Sign In" type="submit" [loading]="loading" [disabled]="loginForm.invalid" styleClass="w-full"></p-button>
+                    </div>
+                </form>
+
+                <div class="login-footer mt-3 text-center">
+                    <a href="#" class="text-sm">Forgot Password?</a>
+                </div>
+            </p-card>
         </div>
-        <div class="p-field">
-          <label for="password">Password</label>
-          <input pInputText type="password" id="password" formControlName="password" />
-        </div>
-      </div>
-      <div class="p-field">
-        <p-button label="Submit" type="submit" [disabled]="loginForm.invalid"></p-button>
-      </div>
-    </form>
-  </p-card>
+    </div>
 </div>

@@ -77,6 +77,18 @@ services:
       - client-service
       - product-service
 
+  config-service:
+    build: backend/config-service
+    image: ghcr.io/owner/repo/config-service
+    ports:
+      - "9094:9094"
+    environment:
+      - DB_URL_CONFIG=jdbc:postgresql://postgres:5432/config_db
+      - DB_USERNAME=${DB_USERNAME:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+    depends_on:
+      - postgres
+
   bff:
     build: bff
     image: ghcr.io/owner/repo/bff
@@ -88,6 +100,7 @@ services:
       - product-service
       - client-service
       - appointment-service
+      - config-service
 
   frontend:
     build: frontend/angular-client
