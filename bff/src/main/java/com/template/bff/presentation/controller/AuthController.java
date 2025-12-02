@@ -1,9 +1,8 @@
 package com.template.bff.presentation.controller;
 
 import com.template.security.grpc.AuthRequest;
-import com.template.security.grpc.AuthResponse;
 import com.template.security.grpc.AuthServiceGrpc;
-import net.devh.boot.grpc.client.inject.GrpcClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +11,21 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @GrpcClient("security-service")
-    private AuthServiceGrpc.AuthServiceBlockingStub authServiceClient;
+    private final AuthServiceGrpc.AuthServiceBlockingStub authServiceStub;
 
     @PostMapping("/login")
-    public Mono<AuthResponse> login(@RequestBody AuthRequest request) {
-        return Mono.just(authServiceClient.authenticate(request));
+    public Mono<String> login(@RequestBody LoginRequest request) {
+        return Mono.fromCallable(() -> {
+            var response = authServiceStub.authenticate(AuthRequest.newBuilder()
+                    .setUsername(request.username())
+                    .setPassword(request.password())
+                    .build());
+            return response.getAccessToken();
+        });
     }
+
+    public record LoginRequest(String username, String password) {}
 }

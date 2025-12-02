@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package com.template.config;
+
+option java_multiple_files = true;
+option java_package = "com.template.config";
+option java_outer_classname = "ConfigProto";
+
+service ConfigService {
+  rpc GetGlobalConfig (GetGlobalConfigRequest) returns (GlobalConfigResponse);
+  rpc UpdateGlobalConfig (UpdateGlobalConfigRequest) returns (GlobalConfigResponse);
+  rpc GetUserPreference (GetUserPreferenceRequest) returns (UserPreferenceResponse);
+  rpc UpdateUserPreference (UpdateUserPreferenceRequest) returns (UserPreferenceResponse);
+}
+
+message GetGlobalConfigRequest {}
+
+message GlobalConfigResponse {
+  string app_name = 1;
+  string logo_url = 2;
+  string primary_color = 3;
+  string secondary_color = 4;
+  string timezone = 5;
+}
+
+message UpdateGlobalConfigRequest {
+  string app_name = 1;
+  string logo_url = 2;
+  string primary_color = 3;
+  string secondary_color = 4;
+  string timezone = 5;
+}
+
+message GetUserPreferenceRequest {
+  string user_id = 1;
+}
+
+message UserPreferenceResponse {
+  string user_id = 1;
+  string theme = 2; // "dark" or "light"
+  string language = 3;
+}
+
+message UpdateUserPreferenceRequest {
+  string user_id = 1;
+  string theme = 2;
+  string language = 3;
+}
